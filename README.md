@@ -7,8 +7,7 @@ InstaBox 给每个 Agent 一台完整的云端 Linux 虚拟机：独立内核、
 它不是共享内核的沙箱，而是一整台可以长期使用的机器：后台进程能活下来，环境能留得住，Agent 大部分时间在等待时也不会按满配计费。
 
 - 官网：<https://instabox.sh>
-- 中文文档：<https://instabox.sh/docs>
-- 本站点：<https://instabox.ndjp.net>
+- 文档：<https://instabox.sh/docs>
 
 ---
 
@@ -252,7 +251,6 @@ instabox templates                   # 可用模板
 - 官网与定价：<https://instabox.sh>
 - 英文文档：<https://instabox.sh/docs>（每页加 `.md` 可取 Markdown 原文）
 - 文档索引：<https://instabox.sh/docs/llms.txt>
-- 中文文档站：<https://instabox.ndjp.net>
 - Discord：<https://discord.gg/instabox>
 - 系统状态：<https://instabox.instatus.com/>
 - 信任中心：<https://app.vanta.com/insforge.dev/trust/9dxtxcntvvv5ow2tx7e4dm>
