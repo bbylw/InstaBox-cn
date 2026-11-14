@@ -2,7 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, NavLink, useParams } from 'react-router-dom'
 import { ScrollToTop, SiteFooter, SiteHeader } from '../components/Layout'
 import Markdown, { extractHeadings } from '../components/Markdown'
-import { docGroups, getDoc, getDocContent, getDocNeighbors } from '../data/docs'
+import { getDocContent } from '../data/doc-content'
+import { docGroups, getDoc, getDocNeighbors } from '../data/docs'
 
 export default function Docs() {
   const { slug } = useParams()
