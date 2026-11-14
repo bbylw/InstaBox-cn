@@ -49,7 +49,7 @@ instabox resize dev --vcpus 8 --mem-mib 16384
 | `deleteAfterSeconds` | integer | 无 | 60–86400 | `--delete-after` |
 | `archiveSeconds` | integer | 无 | 60–86400 | - |
 
-TypeScript SDK 的中文含义与 REST 略有差异：`diskGiB` 对应 `persistentDiskGiB`，`autoSuspendMs` 用毫秒，`archiveMs` 也用毫秒。REST 请求体里写 `diskGiB` 会得到 `400 unknown_field`。
+TypeScript SDK 的字段名与 REST 略有差异：`diskGiB` 对应 `persistentDiskGiB`，`autoSuspendMs` 用毫秒，`archiveMs` 也用毫秒。REST 请求体里写 `diskGiB` 会得到 `400 unknown_field`。
 
 ## 从快照创建时的规格
 
