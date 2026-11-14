@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
@@ -47,19 +47,42 @@ function textOf(node: ReactNode): string {
   return ''
 }
 
+type CopyState = 'idle' | 'copied' | 'failed'
+
+async function copyText(text: string) {
+  try {
+    await navigator.clipboard.writeText(text)
+    return true
+  } catch {
+    // Clipboard access can be denied (permissions, insecure context). Fall back to a
+    // temporary field so the action still succeeds where execCommand is available.
+    const field = document.createElement('textarea')
+    field.value = text
+    field.setAttribute('readonly', '')
+    field.style.position = 'fixed'
+    field.style.opacity = '0'
+    document.body.appendChild(field)
+    field.select()
+    const ok = document.execCommand('copy')
+    field.remove()
+    return ok
+  }
+}
+
 function CodeBlock({ children }: { children?: ReactNode }) {
   const ref = useRef<HTMLPreElement>(null)
-  const [copied, setCopied] = useState(false)
+  const [state, setState] = useState<CopyState>('idle')
+  const timer = useRef<number | undefined>(undefined)
+
+  useEffect(() => () => window.clearTimeout(timer.current), [])
 
   const copy = async () => {
-    const text = ref.current?.innerText ?? ''
-    try {
-      await navigator.clipboard.writeText(text)
-      setCopied(true)
-      window.setTimeout(() => setCopied(false), 1600)
-    } catch {
-      setCopied(false)
-    }
+    const text = ref.current?.textContent ?? ''
+    if (!text) return
+    const ok = await copyText(text)
+    setState(ok ? 'copied' : 'failed')
+    window.clearTimeout(timer.current)
+    timer.current = window.setTimeout(() => setState('idle'), 2000)
   }
 
   const language = (() => {
@@ -76,14 +99,20 @@ function CodeBlock({ children }: { children?: ReactNode }) {
     <div className="code-block">
       <div className="code-block__bar">
         <span className="code-block__lang">{language || 'shell'}</span>
-        <button
-          type="button"
-          className={`code-block__copy${copied ? ' is-copied' : ''}`}
-          onClick={copy}
-          aria-live="polite"
-        >
-          {copied ? '已复制' : '复制'}
-        </button>
+        <div className="code-block__actions">
+          <span className="code-block__feedback" data-state={state} role="status">
+            {state === 'copied' ? '已复制' : state === 'failed' ? '复制失败' : ''}
+          </span>
+          <button
+            type="button"
+            className="code-block__copy"
+            onClick={copy}
+            data-copied={state === 'copied'}
+            data-failed={state === 'failed'}
+          >
+            复制
+          </button>
+        </div>
       </div>
       <pre ref={ref}>{children}</pre>
     </div>
@@ -98,7 +127,11 @@ export default function Markdown({ content }: { content: string }) {
       (Tag: 'h2' | 'h3') =>
       ({ children }: { children?: ReactNode }) => {
         const text = textOf(children).trim()
-        return <Tag id={slugify(text) || 'section'}>{children}</Tag>
+        return (
+          <Tag id={slugify(text) || 'section'} tabIndex={-1}>
+            {children}
+          </Tag>
+        )
       }
 
     return {
@@ -122,7 +155,7 @@ export default function Markdown({ content }: { content: string }) {
         )
       },
       table: ({ children }: { children?: ReactNode }) => (
-        <div className="table-wrap">
+        <div className="table-wrap" role="region" aria-label="表格" tabIndex={0}>
           <table>{children}</table>
         </div>
       ),

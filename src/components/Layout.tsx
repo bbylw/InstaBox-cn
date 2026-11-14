@@ -38,7 +38,11 @@ export function SiteHeader() {
           )}
         </div>
         <nav className="site-header__nav" aria-label="主导航">
-          <Link to="/docs/overview" className={`nav-link${onDocs ? ' is-active' : ''}`}>
+          <Link
+            to="/docs/overview"
+            className={`nav-link${onDocs ? ' is-active' : ''}`}
+            aria-current={onDocs ? 'page' : undefined}
+          >
             文档
           </Link>
           <Link to="/docs/pricing" className="nav-link nav-link--secondary">

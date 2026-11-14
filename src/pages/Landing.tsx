@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactElement } from 'react'
+import { useEffect, useRef, useState, type ReactElement } from 'react'
 import { Link } from 'react-router-dom'
 import { SiteFooter, SiteHeader } from '../components/Layout'
 
@@ -127,16 +127,30 @@ function Icon({ name }: { name: string }) {
 }
 
 function CopyCommand() {
-  const [copied, setCopied] = useState(false)
+  const [state, setState] = useState<'idle' | 'copied' | 'failed'>('idle')
+  const timer = useRef<number | undefined>(undefined)
+
+  useEffect(() => () => window.clearTimeout(timer.current), [])
 
   const copy = async () => {
+    let ok = false
     try {
       await navigator.clipboard.writeText(installCommand)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1600)
+      ok = true
     } catch {
-      setCopied(false)
+      const field = document.createElement('textarea')
+      field.value = installCommand
+      field.setAttribute('readonly', '')
+      field.style.position = 'fixed'
+      field.style.opacity = '0'
+      document.body.appendChild(field)
+      field.select()
+      ok = document.execCommand('copy')
+      field.remove()
     }
+    setState(ok ? 'copied' : 'failed')
+    window.clearTimeout(timer.current)
+    timer.current = window.setTimeout(() => setState('idle'), 2000)
   }
 
   return (
@@ -145,13 +159,15 @@ function CopyCommand() {
       <code>{installCommand}</code>
       <button
         type="button"
-        className={`install-line__copy${copied ? ' is-copied' : ''}`}
+        className="install-line__copy"
         onClick={copy}
-        aria-label="复制安装命令"
-        aria-live="polite"
+        data-state={state}
       >
-        {copied ? '已复制' : '复制'}
+        复制
       </button>
+      <span className="visually-hidden" role="status">
+        {state === 'copied' ? '已复制' : state === 'failed' ? '复制失败' : ''}
+      </span>
     </div>
   )
 }

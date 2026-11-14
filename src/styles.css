@@ -18,6 +18,10 @@
   --mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", "Cascadia Code", Menlo, Consolas, monospace;
   --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB",
     "Microsoft YaHei", "Noto Sans SC", sans-serif;
+  --header-h: 3.875rem;
+  --scrollbar-thumb: rgba(255, 255, 255, 0.24);
+  --scrollbar-track: transparent;
+  accent-color: var(--accent);
 }
 
 *,
@@ -28,7 +32,8 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 76px;
+  scroll-padding-top: 4.75rem;
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -36,7 +41,7 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--sans);
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: rgba(255, 122, 69, 0.12);
@@ -48,8 +53,21 @@ body {
 }
 
 * {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+  scrollbar-width: auto;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --scrollbar-thumb: #ffffff;
+    --scrollbar-track: #000000;
+  }
+}
+
+@media (forced-colors: active) {
+  * {
+    scrollbar-color: CanvasText Canvas;
+  }
 }
 
 *::-webkit-scrollbar {
@@ -58,7 +76,7 @@ body {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.14);
+  background: var(--scrollbar-thumb);
   border: 3px solid transparent;
   background-clip: content-box;
   border-radius: 999px;
@@ -106,7 +124,7 @@ ul {
 }
 
 .page {
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
 }
@@ -125,7 +143,7 @@ ul {
 .site-header__inner {
   max-width: 1280px;
   margin: 0 auto;
-  height: 62px;
+  min-height: var(--header-h);
   padding: 0 24px;
   display: flex;
   align-items: center;
@@ -144,7 +162,7 @@ ul {
   align-items: center;
   gap: 9px;
   font-weight: 600;
-  font-size: 16.5px;
+  font-size: 1.031rem;
   letter-spacing: -0.02em;
   color: var(--text);
   white-space: nowrap;
@@ -166,7 +184,7 @@ ul {
 }
 
 .site-header__context {
-  font-size: 13px;
+  font-size: 0.813rem;
   color: var(--muted-2);
   white-space: nowrap;
   overflow: hidden;
@@ -181,7 +199,7 @@ ul {
 }
 
 .site-header__nav a {
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--muted);
   padding: 7px 11px;
   border-radius: 8px;
@@ -212,10 +230,10 @@ ul {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 44px;
-  padding: 0 20px;
+  min-height: 2.75rem;
+  padding: 0.5rem 1.25rem;
   border-radius: 10px;
-  font-size: 14.5px;
+  font-size: 0.906rem;
   font-weight: 500;
   border: 1px solid transparent;
   cursor: pointer;
@@ -253,9 +271,9 @@ ul {
 }
 
 .btn--sm {
-  height: 34px;
-  padding: 0 14px;
-  font-size: 13px;
+  min-height: 2.125rem;
+  padding: 0.25rem 0.875rem;
+  font-size: 0.813rem;
   border-radius: 8px;
 }
 
@@ -319,7 +337,7 @@ ul {
   border: 1px solid var(--line-strong);
   background: rgba(255, 255, 255, 0.03);
   border-radius: 999px;
-  font-size: 12.5px;
+  font-size: 0.781rem;
   color: var(--muted);
   letter-spacing: 0.01em;
 }
@@ -334,7 +352,7 @@ ul {
 
 .hero h1 {
   margin-top: 24px;
-  font-size: clamp(34px, 3.9vw, 54px);
+  font-size: clamp(2.125rem, 3.9vw, 3.375rem);
   line-height: 1.12;
   letter-spacing: -0.035em;
   font-weight: 600;
@@ -360,7 +378,7 @@ ul {
   margin-top: 22px;
   max-width: 540px;
   color: var(--muted);
-  font-size: 16.5px;
+  font-size: 1.031rem;
   line-height: 1.75;
 }
 
@@ -379,7 +397,7 @@ ul {
   border-radius: 10px;
   background: rgba(10, 12, 16, 0.8);
   font-family: var(--mono);
-  font-size: 13.5px;
+  font-size: 0.844rem;
 }
 
 .install-line__prompt {
@@ -398,11 +416,13 @@ ul {
 }
 
 .install-line__copy {
+  min-inline-size: 1.5rem;
+  min-block-size: 1.5rem;
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.04);
   color: var(--muted);
   border-radius: 6px;
-  font-size: 11.5px;
+  font-size: 0.719rem;
   padding: 4px 9px;
   cursor: pointer;
   transition: color 0.15s ease, background 0.15s ease;
@@ -413,9 +433,14 @@ ul {
   background: rgba(255, 255, 255, 0.08);
 }
 
-.install-line__copy.is-copied {
+.install-line__copy[data-state='copied'] {
   color: var(--green);
   border-color: rgba(74, 222, 128, 0.3);
+}
+
+.install-line__copy[data-state='failed'] {
+  color: #ff9a9a;
+  border-color: rgba(255, 138, 138, 0.35);
 }
 
 .hero__actions {
@@ -427,7 +452,7 @@ ul {
 
 .hero__meta {
   margin-top: 20px;
-  font-size: 13px;
+  font-size: 0.813rem;
   color: var(--muted-2);
   display: flex;
   align-items: center;
@@ -484,7 +509,7 @@ ul {
   box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.06);
   overflow: hidden;
   font-family: var(--mono);
-  font-size: 12.5px;
+  font-size: 0.781rem;
 }
 
 .machine-card__head {
@@ -506,17 +531,17 @@ ul {
 .machine-card__name {
   font-weight: 600;
   font-family: var(--sans);
-  font-size: 13.5px;
+  font-size: 0.844rem;
 }
 
 .machine-card__id {
   margin-left: auto;
   color: var(--muted-2);
-  font-size: 11px;
+  font-size: 0.688rem;
 }
 
 .pill {
-  font-size: 10.5px;
+  font-size: 0.656rem;
   padding: 2px 8px;
   border-radius: 999px;
   letter-spacing: 0.02em;
@@ -546,13 +571,13 @@ ul {
 
 .machine-card__specs span {
   font-family: var(--sans);
-  font-size: 10.5px;
+  font-size: 0.656rem;
   color: var(--muted-2);
 }
 
 .machine-card__specs strong {
   font-weight: 500;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #dfe4ee;
 }
 
@@ -595,7 +620,7 @@ ul {
   padding: 11px 16px;
   border-top: 1px solid var(--line);
   color: var(--muted-2);
-  font-size: 10.5px;
+  font-size: 0.656rem;
   background: rgba(255, 255, 255, 0.015);
 }
 
@@ -616,7 +641,7 @@ ul {
 
 .logos__label {
   text-align: center;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted-2);
   letter-spacing: 0.04em;
 }
@@ -630,7 +655,7 @@ ul {
 }
 
 .logos__item {
-  font-size: 14.5px;
+  font-size: 0.906rem;
   font-weight: 500;
   color: rgba(236, 238, 243, 0.56);
   letter-spacing: -0.01em;
@@ -658,7 +683,7 @@ ul {
 }
 
 .eyebrow {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -667,7 +692,7 @@ ul {
 }
 
 .section h2 {
-  font-size: clamp(27px, 3vw, 38px);
+  font-size: clamp(1.688rem, 3vw, 2.375rem);
   letter-spacing: -0.03em;
   text-wrap: balance;
 }
@@ -675,7 +700,7 @@ ul {
 .section__sub {
   margin-top: 16px;
   color: var(--muted);
-  font-size: 15.5px;
+  font-size: 0.969rem;
   line-height: 1.75;
   text-wrap: pretty;
 }
@@ -713,13 +738,13 @@ ul {
 }
 
 .card h3 {
-  font-size: 16.5px;
+  font-size: 1.031rem;
   margin-bottom: 9px;
 }
 
 .card p {
   color: var(--muted);
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.7;
 }
 
@@ -772,7 +797,7 @@ ul {
   position: relative;
   padding-left: 28px;
   color: #cdd3de;
-  font-size: 14.5px;
+  font-size: 0.906rem;
 }
 
 .check-list li::before {
@@ -785,7 +810,7 @@ ul {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--accent);
   background: var(--accent-soft);
   border: 1px solid rgba(255, 122, 69, 0.22);
@@ -797,7 +822,7 @@ ul {
   gap: 8px;
   margin-top: 28px;
   color: var(--accent-2);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
 }
 
@@ -817,7 +842,7 @@ ul {
   border-bottom: 1px solid var(--line);
   color: var(--muted-2);
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: 0.719rem;
   background: rgba(255, 255, 255, 0.02);
 }
 
@@ -838,7 +863,7 @@ ul {
   padding: 20px 22px 24px;
   overflow-x: auto;
   font-family: var(--mono);
-  font-size: 12.6px;
+  font-size: 0.788rem;
   line-height: 1.75;
   color: #c9d2e0;
 }
@@ -864,13 +889,13 @@ ul {
 }
 
 .usecase h3 {
-  font-size: 16px;
+  font-size: 1rem;
   margin-bottom: 8px;
 }
 
 .usecase p {
   color: var(--muted);
-  font-size: 13.8px;
+  font-size: 0.863rem;
   line-height: 1.65;
 }
 
@@ -920,7 +945,7 @@ ul {
   position: absolute;
   top: -11px;
   left: 22px;
-  font-size: 10.5px;
+  font-size: 0.656rem;
   letter-spacing: 0.04em;
   padding: 3px 9px;
   border-radius: 999px;
@@ -930,14 +955,14 @@ ul {
 }
 
 .plan h3 {
-  font-size: 15px;
+  font-size: 0.938rem;
   color: var(--muted);
   font-weight: 500;
 }
 
 .plan__price {
   margin-top: 10px;
-  font-size: 30px;
+  font-size: 1.875rem;
   font-weight: 600;
   letter-spacing: -0.03em;
   display: flex;
@@ -948,7 +973,7 @@ ul {
 
 .plan__price span {
   margin-left: 8px;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 400;
   color: var(--muted-2);
   letter-spacing: 0;
@@ -962,7 +987,7 @@ ul {
 }
 
 .plan li {
-  font-size: 13px;
+  font-size: 0.813rem;
   color: #c3cad6;
   padding-left: 16px;
   position: relative;
@@ -985,7 +1010,7 @@ ul {
 
 .plans__note {
   margin-top: 22px;
-  font-size: 13px;
+  font-size: 0.813rem;
   color: var(--muted-2);
 }
 
@@ -1015,13 +1040,13 @@ ul {
 }
 
 .cta h2 {
-  font-size: clamp(24px, 2.6vw, 32px);
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
 }
 
 .cta p {
   margin-top: 10px;
   color: var(--muted);
-  font-size: 14.5px;
+  font-size: 0.906rem;
 }
 
 .cta__actions {
@@ -1052,7 +1077,7 @@ ul {
   margin-top: 14px;
   max-width: 300px;
   color: var(--muted-2);
-  font-size: 13px;
+  font-size: 0.813rem;
   line-height: 1.7;
 }
 
@@ -1063,7 +1088,7 @@ ul {
 }
 
 .site-footer__cols h4 {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   color: var(--muted-2);
@@ -1073,7 +1098,7 @@ ul {
 
 .site-footer__cols a {
   display: block;
-  font-size: 13.5px;
+  font-size: 0.844rem;
   color: var(--muted);
   padding: 4px 0;
 }
@@ -1091,7 +1116,7 @@ ul {
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--muted-2);
 }
 
@@ -1123,11 +1148,11 @@ ul {
 
 .docs-sidebar__inner {
   position: sticky;
-  top: 62px;
-  max-height: calc(100vh - 62px);
+  top: var(--header-h);
+  max-height: calc(100dvh - var(--header-h));
   overflow-y: auto;
-  padding: 26px 18px 32px;
-  scrollbar-width: thin;
+  padding: 1.625rem 1.125rem 2rem;
+  scrollbar-width: auto;
 }
 
 .docs-sidebar__search {
@@ -1138,7 +1163,7 @@ ul {
   border: 1px solid var(--line);
   border-radius: 8px;
   color: var(--muted-2);
-  font-size: 12.5px;
+  font-size: 0.781rem;
   margin-bottom: 24px;
   background: rgba(255, 255, 255, 0.02);
   cursor: text;
@@ -1156,7 +1181,7 @@ ul {
   background: transparent;
   color: var(--text);
   font-family: inherit;
-  font-size: 13px;
+  font-size: 0.813rem;
   outline: none;
 }
 
@@ -1171,7 +1196,7 @@ ul {
 
 .docs-nav-empty {
   padding: 4px 10px 12px;
-  font-size: 12.5px;
+  font-size: 0.781rem;
   color: var(--muted-2);
 }
 
@@ -1180,7 +1205,7 @@ ul {
 }
 
 .docs-nav-group > p {
-  font-size: 11px;
+  font-size: 0.688rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted-2);
@@ -1193,7 +1218,7 @@ ul {
   display: block;
   padding: 6px 10px;
   border-radius: 7px;
-  font-size: 13.5px;
+  font-size: 0.844rem;
   color: var(--muted);
   border-left: 2px solid transparent;
 }
@@ -1217,7 +1242,7 @@ ul {
 }
 
 .docs-sidebar__foot a {
-  font-size: 12.5px;
+  font-size: 0.781rem;
   color: var(--muted-2);
   transition: color 0.15s ease;
 }
@@ -1241,7 +1266,7 @@ ul {
   display: flex;
   gap: 8px;
   align-items: center;
-  font-size: 12.5px;
+  font-size: 0.781rem;
   color: var(--muted-2);
   margin-bottom: 16px;
 }
@@ -1251,14 +1276,14 @@ ul {
 }
 
 .docs-head h1 {
-  font-size: clamp(30px, 3.4vw, 40px);
+  font-size: clamp(1.875rem, 3.4vw, 2.5rem);
   letter-spacing: -0.03em;
 }
 
 .docs-head p:last-child {
   margin-top: 12px;
   color: var(--muted);
-  font-size: 15px;
+  font-size: 0.938rem;
 }
 
 .docs-body {
@@ -1276,9 +1301,19 @@ ul {
   display: none;
 }
 
+.docs-toc ul {
+  scroll-target-group: auto;
+}
+
+.docs-toc a:is(:target-current, .is-current) {
+  color: var(--text);
+  border-left-color: var(--accent);
+  font-weight: 600;
+}
+
 .prose {
   color: #c3cad7;
-  font-size: 15px;
+  font-size: 0.938rem;
   line-height: 1.82;
   overflow-wrap: break-word;
 }
@@ -1293,7 +1328,7 @@ ul {
 
 .prose h2 {
   color: var(--text);
-  font-size: 23px;
+  font-size: 1.438rem;
   margin-top: 44px;
   padding-top: 8px;
   scroll-margin-top: 86px;
@@ -1307,7 +1342,7 @@ ul {
 
 .prose h3 {
   color: var(--text);
-  font-size: 17px;
+  font-size: 1.063rem;
   margin-top: 30px;
   scroll-margin-top: 86px;
 }
@@ -1361,7 +1396,7 @@ ul {
   background: rgba(255, 122, 69, 0.06);
   border-radius: 0 8px 8px 0;
   color: #cfd5e0;
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .prose blockquote p {
@@ -1387,15 +1422,25 @@ ul {
 
 .table-wrap {
   overflow-x: auto;
+  max-inline-size: 100%;
   border: 1px solid var(--line);
   border-radius: 10px;
   margin: 22px 0;
+  container-type: inline-size;
 }
 
 .prose table {
   width: 100%;
-  border-collapse: collapse;
-  font-size: 13.5px;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.prose thead {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+  background: var(--panel);
+  font-size: 0.844rem;
 }
 
 .prose th,
@@ -1410,7 +1455,7 @@ ul {
   background: rgba(255, 255, 255, 0.035);
   color: var(--text);
   font-weight: 500;
-  font-size: 12.5px;
+  font-size: 0.781rem;
   white-space: nowrap;
 }
 
@@ -1450,18 +1495,43 @@ ul {
 
 .code-block__lang {
   font-family: var(--mono);
-  font-size: 10.5px;
+  font-size: 0.656rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted-2);
 }
 
+.code-block__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.code-block__feedback {
+  font-size: 0.688rem;
+  color: var(--muted-2);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.code-block__feedback[data-state='copied'] {
+  color: var(--green);
+  opacity: 1;
+}
+
+.code-block__feedback[data-state='failed'] {
+  color: #ff9a9a;
+  opacity: 1;
+}
+
 .code-block__copy {
+  min-inline-size: 1.5rem;
+  min-block-size: 1.5rem;
   border: 1px solid var(--line);
   background: transparent;
   color: var(--muted-2);
-  font-size: 11px;
-  padding: 3px 8px;
+  font-size: 0.688rem;
+  padding: 0.1875rem 0.5rem;
   border-radius: 5px;
   cursor: pointer;
 }
@@ -1471,9 +1541,14 @@ ul {
   border-color: rgba(255, 122, 69, 0.35);
 }
 
-.code-block__copy.is-copied {
+.code-block__copy[data-copied='true'] {
   color: var(--green);
   border-color: rgba(74, 222, 128, 0.3);
+}
+
+.code-block__copy[data-failed='true'] {
+  color: #ff9a9a;
+  border-color: rgba(255, 138, 138, 0.35);
 }
 
 .code-block pre {
@@ -1481,7 +1556,7 @@ ul {
   padding: 16px 18px;
   overflow-x: auto;
   font-family: var(--mono);
-  font-size: 12.8px;
+  font-size: 0.8rem;
   line-height: 1.7;
   color: #c6d0de;
 }
@@ -1516,12 +1591,12 @@ ul {
 }
 
 .docs-pager__item span {
-  font-size: 11.5px;
+  font-size: 0.719rem;
   color: var(--muted-2);
 }
 
 .docs-pager__item strong {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 500;
   color: var(--text);
 }
@@ -1530,12 +1605,31 @@ ul {
   text-align: right;
 }
 
+.docs-head__crumb ol {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.docs-head__crumb li + li::before {
+  content: '/';
+  margin-right: 0.5rem;
+  color: var(--muted-2);
+}
+
+.docs-head__crumb a[aria-current='page'] {
+  color: var(--muted);
+}
+
 .docs-missing {
   padding: 80px 0;
 }
 
 .docs-missing h1 {
-  font-size: 32px;
+  font-size: 2rem;
 }
 
 .docs-missing p {
@@ -1557,12 +1651,12 @@ ul {
     top: 92px;
     align-self: start;
     padding-top: 32px;
-    font-size: 12.5px;
+    font-size: 0.781rem;
   }
 
   .docs-toc > p {
     color: var(--muted-2);
-    font-size: 11px;
+    font-size: 0.688rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     font-weight: 600;
@@ -1580,6 +1674,14 @@ ul {
   .docs-toc a:hover {
     color: var(--text);
     border-left-color: var(--accent);
+  }
+}
+
+@supports (content-visibility: auto) {
+  .section,
+  .cta {
+    content-visibility: auto;
+    contain-intrinsic-size: auto none auto 40rem;
   }
 }
 
@@ -1634,7 +1736,7 @@ ul {
   }
 
   .site-header__nav a:not(.site-header__icon) {
-    font-size: 13px;
+    font-size: 0.813rem;
     padding: 6px 8px;
   }
 
@@ -1707,7 +1809,7 @@ ul {
   align-items: center;
   justify-content: space-between;
   padding: 12px 14px;
-  font-size: 13.5px;
+  font-size: 0.844rem;
   color: var(--text);
   cursor: pointer;
   list-style: none;
@@ -1720,7 +1822,7 @@ ul {
 .docs-mobile-nav summary::after {
   content: "＋";
   color: var(--muted-2);
-  font-size: 15px;
+  font-size: 0.938rem;
   line-height: 1;
 }
 
@@ -1740,7 +1842,7 @@ ul {
 }
 
 .docs-mobile-nav__groups p {
-  font-size: 10.5px;
+  font-size: 0.656rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted-2);
@@ -1751,7 +1853,7 @@ ul {
 .docs-mobile-nav__groups a {
   display: block;
   padding: 5px 0;
-  font-size: 13px;
+  font-size: 0.813rem;
   color: var(--muted);
 }
 
@@ -1777,14 +1879,14 @@ ul {
   }
 
   .site-header__inner {
-    height: 56px;
+    min-height: 3.5rem;
     padding: 0 16px;
     gap: 8px;
   }
 
   .logo {
     gap: 7px;
-    font-size: 15.5px;
+    font-size: 0.969rem;
   }
 
   .logo svg {
@@ -1804,7 +1906,7 @@ ul {
 
   .site-header__nav a {
     padding: 9px 9px;
-    font-size: 13px;
+    font-size: 0.813rem;
   }
 
   .site-header__nav .nav-link--secondary {
@@ -1814,7 +1916,7 @@ ul {
   .site-header__actions .btn--sm {
     height: 32px;
     padding: 0 12px;
-    font-size: 12.5px;
+    font-size: 0.781rem;
   }
 
   .hero__inner {
@@ -1824,20 +1926,20 @@ ul {
   }
 
   .badge {
-    font-size: 12px;
+    font-size: 0.75rem;
     padding: 5px 11px 5px 8px;
   }
 
   .hero h1 {
     margin-top: 18px;
-    font-size: 31px;
+    font-size: 1.938rem;
     line-height: 1.18;
     letter-spacing: -0.028em;
   }
 
   .hero__sub {
     margin-top: 16px;
-    font-size: 15px;
+    font-size: 0.938rem;
     line-height: 1.7;
   }
 
@@ -1846,16 +1948,16 @@ ul {
     max-width: 100%;
     gap: 8px;
     padding: 10px 10px 10px 13px;
-    font-size: 12.5px;
+    font-size: 0.781rem;
   }
 
   .install-line code {
-    font-size: 12.5px;
+    font-size: 0.781rem;
   }
 
   .install-line__copy {
     flex-shrink: 0;
-    font-size: 11px;
+    font-size: 0.688rem;
     padding: 4px 8px;
   }
 
@@ -1867,12 +1969,12 @@ ul {
   .hero__actions .btn {
     flex: 1 1 140px;
     height: 42px;
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 
   .hero__meta {
     margin-top: 16px;
-    font-size: 12px;
+    font-size: 0.75rem;
     line-height: 1.6;
   }
 
@@ -1881,7 +1983,7 @@ ul {
   }
 
   .machine-card {
-    font-size: 11.5px;
+    font-size: 0.719rem;
   }
 
   .machine-card__head {
@@ -1890,7 +1992,7 @@ ul {
   }
 
   .machine-card__id {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
 
   .machine-card__specs > div {
@@ -1900,12 +2002,12 @@ ul {
   .machine-card__term {
     padding: 13px;
     gap: 6px;
-    font-size: 11px;
+    font-size: 0.688rem;
   }
 
   .machine-card__foot {
     padding: 10px 13px;
-    font-size: 9.5px;
+    font-size: 0.594rem;
   }
 
   .machine-card__url {
@@ -1922,7 +2024,7 @@ ul {
   }
 
   .logos__item {
-    font-size: 13px;
+    font-size: 0.813rem;
   }
 
   .section {
@@ -1935,17 +2037,17 @@ ul {
 
   .eyebrow {
     margin-bottom: 10px;
-    font-size: 11px;
+    font-size: 0.688rem;
   }
 
   .section h2 {
-    font-size: 24px;
+    font-size: 1.5rem;
     line-height: 1.25;
   }
 
   .section__sub {
     margin-top: 12px;
-    font-size: 14px;
+    font-size: 0.875rem;
     line-height: 1.7;
   }
 
@@ -1963,15 +2065,15 @@ ul {
   }
 
   .card h3 {
-    font-size: 15.5px;
+    font-size: 0.969rem;
   }
 
   .card p {
-    font-size: 13.5px;
+    font-size: 0.844rem;
   }
 
   .check-list li {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 
   .split {
@@ -1984,7 +2086,7 @@ ul {
 
   .snippet {
     padding: 16px 14px 18px;
-    font-size: 11.4px;
+    font-size: 0.713rem;
     line-height: 1.7;
   }
 
@@ -1999,11 +2101,11 @@ ul {
   }
 
   .usecase h3 {
-    font-size: 15.5px;
+    font-size: 0.969rem;
   }
 
   .usecase p {
-    font-size: 13.5px;
+    font-size: 0.844rem;
   }
 
   .plans {
@@ -2015,7 +2117,7 @@ ul {
   }
 
   .plans__note {
-    font-size: 12px;
+    font-size: 0.75rem;
     line-height: 1.7;
   }
 
@@ -2050,12 +2152,12 @@ ul {
   }
 
   .site-footer__cols a {
-    font-size: 13px;
+    font-size: 0.813rem;
   }
 
   .site-footer__bottom {
     margin-top: 28px;
-    font-size: 11.5px;
+    font-size: 0.719rem;
     gap: 8px;
   }
 
@@ -2080,16 +2182,16 @@ ul {
 
   .docs-head__crumb {
     margin-bottom: 12px;
-    font-size: 12px;
+    font-size: 0.75rem;
   }
 
   .docs-head h1 {
-    font-size: 26px;
+    font-size: 1.625rem;
   }
 
   .docs-head p:last-child {
     margin-top: 10px;
-    font-size: 13.8px;
+    font-size: 0.863rem;
     line-height: 1.65;
   }
 
@@ -2098,23 +2200,23 @@ ul {
   }
 
   .prose {
-    font-size: 14.5px;
+    font-size: 0.906rem;
     line-height: 1.78;
   }
 
   .prose h2 {
-    font-size: 20px;
+    font-size: 1.25rem;
     margin-top: 32px;
   }
 
   .prose h3 {
-    font-size: 16px;
+    font-size: 1rem;
     margin-top: 24px;
   }
 
   .prose blockquote {
     padding: 12px 14px;
-    font-size: 13.5px;
+    font-size: 0.844rem;
   }
 
   .prose .inline-code {
@@ -2132,7 +2234,7 @@ ul {
 
   .code-block pre {
     padding: 13px 14px;
-    font-size: 11.8px;
+    font-size: 0.738rem;
     line-height: 1.7;
   }
 
@@ -2141,7 +2243,7 @@ ul {
   }
 
   .prose table {
-    font-size: 12.5px;
+    font-size: 0.781rem;
     min-width: 460px;
   }
 
@@ -2163,7 +2265,7 @@ ul {
 
 @media (max-width: 420px) {
   .hero h1 {
-    font-size: 28px;
+    font-size: 1.75rem;
   }
 
   .hero__actions .btn {
@@ -2176,7 +2278,7 @@ ul {
 
   .site-header__actions .btn--sm {
     padding: 0 10px;
-    font-size: 12px;
+    font-size: 0.75rem;
   }
 
   .machine-card__specs {
@@ -2200,7 +2302,7 @@ ul {
   border-radius: 8px;
   background: var(--accent);
   color: #1a0c05;
-  font-size: 13px;
+  font-size: 0.813rem;
   font-weight: 600;
   transition: transform 0.15s ease;
 }
@@ -2237,11 +2339,11 @@ ul {
   display: grid;
   place-items: center;
   color: var(--muted-2);
-  font-size: 14px;
+  font-size: 0.875rem;
 }
 
 .prose h1 {
-  font-size: 26px;
+  font-size: 1.625rem;
   scroll-margin-top: 86px;
 }
 

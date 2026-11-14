@@ -13,6 +13,32 @@ export default function Docs() {
   const content = getDocContent(slug)
   const { previous, next } = getDocNeighbors(slug)
   const headings = useMemo(() => extractHeadings(content).filter((heading) => heading.level === 2), [content])
+  const [activeHeading, setActiveHeading] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!headings.length) {
+      setActiveHeading(null)
+      return
+    }
+
+    const elements = headings
+      .map((heading) => document.getElementById(heading.id))
+      .filter((element): element is HTMLElement => Boolean(element))
+    if (!elements.length) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
+        if (visible[0]) setActiveHeading(visible[0].target.id)
+      },
+      { rootMargin: '-6rem 0px -60% 0px', threshold: 0 },
+    )
+
+    elements.forEach((element) => observer.observe(element))
+    return () => observer.disconnect()
+  }, [headings, slug])
 
   const filteredGroups = useMemo(() => {
     const keyword = query.trim().toLowerCase()
@@ -113,11 +139,18 @@ export default function Docs() {
           {page ? (
             <>
               <div className="docs-head">
-                <p className="docs-head__crumb">
-                  <Link to="/docs/overview">文档</Link>
-                  <span>/</span>
-                  {page.title}
-                </p>
+                <nav className="docs-head__crumb" aria-label="面包屑">
+                  <ol>
+                    <li>
+                      <Link to="/docs/overview">文档</Link>
+                    </li>
+                    <li>
+                      <Link to={`/docs/${page.slug}`} aria-current="page">
+                        {page.title}
+                      </Link>
+                    </li>
+                  </ol>
+                </nav>
                 <h1>{page.title}</h1>
                 <p>{page.description}</p>
               </div>
@@ -147,16 +180,22 @@ export default function Docs() {
                 </article>
 
                 {headings.length > 0 && (
-                  <aside className="docs-toc">
-                    <p>本页目录</p>
+                  <nav className="docs-toc" aria-label="本页目录">
+                    <p aria-hidden="true">本页目录</p>
                     <ul>
                       {headings.map((heading) => (
                         <li key={heading.id}>
-                          <a href={`#${heading.id}`}>{heading.text}</a>
+                          <a
+                            href={`#${heading.id}`}
+                            className={activeHeading === heading.id ? 'is-current' : undefined}
+                            aria-current={activeHeading === heading.id ? 'true' : undefined}
+                          >
+                            {heading.text}
+                          </a>
                         </li>
                       ))}
                     </ul>
-                  </aside>
+                  </nav>
                 )}
               </div>
             </>
