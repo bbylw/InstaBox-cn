@@ -1914,8 +1914,8 @@ ul {
   }
 
   .site-header__actions .btn--sm {
-    height: 32px;
-    padding: 0 12px;
+    min-height: 2rem;
+    padding: 0.25rem 0.75rem;
     font-size: 0.781rem;
   }
 
@@ -1968,7 +1968,7 @@ ul {
 
   .hero__actions .btn {
     flex: 1 1 140px;
-    height: 42px;
+    min-height: 2.625rem;
     font-size: 0.875rem;
   }
 
