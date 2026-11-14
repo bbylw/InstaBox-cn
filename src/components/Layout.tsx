@@ -30,11 +30,11 @@ export function SiteHeader() {
       <div className="site-header__inner">
         <div className="site-header__left">
           <Logo />
-          <span className="site-header__divider" aria-hidden="true" />
-          {onDocs ? (
-            <span className="site-header__context">中文文档</span>
-          ) : (
-            <span className="site-header__context">为 AI Agent 打造的云计算机</span>
+          {!onDocs && (
+            <>
+              <span className="site-header__divider" aria-hidden="true" />
+              <span className="site-header__context">为 AI Agent 打造的云计算机</span>
+            </>
           )}
         </div>
         <nav className="site-header__nav" aria-label="主导航">

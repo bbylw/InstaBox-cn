@@ -37,4 +37,4 @@ npx instabox@latest sh
 - [TypeScript SDK](./sdk)：用代码创建、暂停和删除机器。
 - [MCP](./mcp)：让 Claude Code、Cursor、Codex 直接操作机器。
 
-> 提示：英文原版文档的每个页面都可以在 URL 后加 `.md` 得到 Markdown 原文，整站索引位于 `/llms.txt` 和 `/llms-full.txt`。
+> 提示：官方文档的每个页面都可以在 URL 后加 `.md` 得到 Markdown 原文，整站索引位于 `/llms.txt` 和 `/llms-full.txt`。

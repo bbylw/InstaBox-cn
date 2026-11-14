@@ -52,7 +52,7 @@ export default function Docs() {
   }, [query])
 
   useEffect(() => {
-    document.title = page ? `${page.title} · InstaBox 中文文档` : '页面不存在 · InstaBox 中文文档'
+    document.title = page ? `${page.title} · InstaBox` : '页面不存在 · InstaBox'
   }, [page])
 
   useEffect(() => {
@@ -126,10 +126,10 @@ export default function Docs() {
             ))}
             <div className="docs-sidebar__foot">
               <a href="https://instabox.sh/docs" target="_blank" rel="noreferrer">
-                英文原版文档 ↗
+                官方文档
               </a>
               <a href="https://dashboard.instabox.sh" target="_blank" rel="noreferrer">
-                控制台 ↗
+                控制台
               </a>
             </div>
           </div>
