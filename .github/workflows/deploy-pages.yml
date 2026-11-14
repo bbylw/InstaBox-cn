@@ -27,11 +27,12 @@ jobs:
 
       - run: npm ci
 
-      - name: Build for the repository subpath
-        run: npx vp build --base=/InstaBox-cn/
+      - name: Build for the custom domain
+        run: npx vp build
 
-      - name: Add the SPA fallback
+      - name: Add the custom domain and the SPA fallback
         run: |
+          cp CNAME dist/CNAME
           cp dist/index.html dist/404.html
           touch dist/.nojekyll
 
