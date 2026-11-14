@@ -33,7 +33,7 @@ export default function Docs() {
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
         if (visible[0]) setActiveHeading(visible[0].target.id)
       },
-      { rootMargin: '-6rem 0px -60% 0px', threshold: 0 },
+      { rootMargin: '-96px 0px -60% 0px', threshold: 0 },
     )
 
     elements.forEach((element) => observer.observe(element))
